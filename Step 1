@@ -1,0 +1,10 @@
+# Ներբեռնում ենք անհրաժեշտ գրադարանները
+if (!require(imager)) install.packages("imager")
+if (!require(ggplot2)) install.packages("ggplot2")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install("EBImage")
+
+
+library(imager)
+library(ggplot2)
+library(EBImage)
