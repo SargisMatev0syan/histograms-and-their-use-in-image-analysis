@@ -1,0 +1,129 @@
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy as np
+import cv2
+import seaborn as sns
+
+# Ներբեռնենք պատկերը
+image_path = "/mnt/data/project nkar.jpg"
+image = Image.open(image_path)
+
+# Ցուցադրենք սկզբնական նկարը
+plt.imshow(image)
+plt.title("Original Image")
+plt.axis('off')
+plt.show()
+
+# Փոխակերպենք պատկերը  grayscale-ի
+gray_image = image.convert("L")
+
+# Ցուցադրենք grayscale նկարը
+plt.imshow(gray_image, cmap='gray')
+plt.title("Grayscale Image")
+plt.axis('off')
+plt.show()
+
+#Ստեղծել հիստոգրամ  grayscale նկարի համար
+gray_values = np.array(gray_image).flatten()
+sns.histplot(gray_values, bins=256, color='blue')
+plt.title("Grayscale Histogram")
+plt.xlabel("Intensity")
+plt.ylabel("Frequency")
+plt.show()
+
+# Դուրս բերել երանգները
+image_np = np.array(image)
+red_channel = image_np[:,:,0].flatten()
+green_channel = image_np[:,:,1].flatten()
+blue_channel = image_np[:,:,2].flatten()
+
+#Ստեղծել հիստոգրամ յուրաքանչյուր երանգի համար
+plt.figure(figsize=(10, 15))
+plt.subplot(3, 1, 1)
+sns.histplot(red_channel, bins=256, color='red')
+plt.title("Red Channel Histogram")
+plt.xlabel("Intensity")
+plt.ylabel("Frequency")
+
+plt.subplot(3, 1, 2)
+sns.histplot(green_channel, bins=256, color='green')
+plt.title("Green Channel Histogram")
+plt.xlabel("Intensity")
+plt.ylabel("Frequency")
+
+plt.subplot(3, 1, 3)
+sns.histplot(blue_channel, bins=256, color='blue')
+plt.title("Blue Channel Histogram")
+plt.xlabel("Intensity")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.show()
+
+# Ձեռքով կատարենք հիստոգրամի հավասարեցումը
+hist_vals, bin_edges = np.histogram(gray_values, bins=256, range=(0, 256))
+cdf = hist_vals.cumsum()
+cdf_normalized = cdf / cdf.max()
+
+equalized_image = np.interp(gray_values, bin_edges[:-1], cdf_normalized * 255)
+equalized_image = equalized_image.reshape(gray_image.size[::-1])
+
+# Ցուցադրենք հավասարեցված grayscale պատկերը
+plt.imshow(equalized_image, cmap='gray')
+plt.title("Equalized Grayscale Image")
+plt.axis('off')
+plt.show()
+
+# Ցուցադրենք սկզբնական և հավասարեցված հիստոգրամները
+plt.figure(figsize=(10, 10))
+plt.subplot(2, 1, 1)
+sns.histplot(gray_values, bins=256, color='gray')
+plt.title("Original Grayscale Histogram")
+plt.xlabel("Intensity")
+plt.ylabel("Frequency")
+
+plt.subplot(2, 1, 2)
+sns.histplot(equalized_image.flatten(), bins=256, color='gray')
+plt.title("Equalized Grayscale Histogram")
+plt.xlabel("Intensity")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.show()
+
+# Կիրառենք thresholding օգտագործելով Otsu-ի մեթոդը
+_, binary_image = cv2.threshold(np.array(gray_image), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+# Ցուցադրել  binary նկարը
+plt.imshow(binary_image, cmap='gray')
+plt.title("Binary Image after Thresholding")
+plt.axis('off')
+plt.show()
+
+# Սեգմենտացիա հիմնված հիստոգրամի գագաթների վրա (պարզ thresholding)
+num_labels, labels_im = cv2.connectedComponents(binary_image)
+
+# Ցուցադրել սեգմենտացիա նկարը
+plt.imshow(labels_im, cmap='nipy_spectral')
+plt.title("Segmented Image")
+plt.axis('off')
+plt.show()
+
+#Ադապտացված հիստոգրամի հավասարեցում օգտագործելով CLAHE
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+ahe_image = clahe.apply(np.array(gray_image))
+
+# Ցուցադրենք ադապտացված հիստոգրամի հավասարեցված նկարը
+plt.imshow(ahe_image, cmap='gray')
+plt.title("Adaptive Histogram Equalized Image")
+plt.axis('off')
+plt.show()
+
+#Կիրառենք multi-level thresholding օգտագործելով Otsu-ի մեթոդը
+thresh1 = cv2.threshold(np.array(gray_image), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[0]
+thresh2 = cv2.threshold(np.array(gray_image), thresh1, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[0]
+multi_thresh_image = np.digitize(np.array(gray_image), bins=[thresh1, thresh2])
+
+# Ցուցադրել  multi-level thresholded նկարը
+plt.imshow(multi_thresh_image, cmap='gray')
+plt.title("Multi-level Thresholded Image")
+plt.axis('off')
+plt.show()
