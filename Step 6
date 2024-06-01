@@ -1,0 +1,5 @@
+# Սեգմենտացիա հիմնված հիստոգրամի գագաթների վրա (պարզ thresholding)
+segmented_image <- bwlabel(binary_image)
+
+#Ցուցադրենք սեգմենտացված նկարը
+display(segmented_image, title = "Segmented Image")
