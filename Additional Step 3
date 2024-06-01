@@ -1,0 +1,15 @@
+# Feature Extraction օգտագործելով Harris Corner Detection
+gray_image_np = np.float32(np.array(gray_image))
+dst = cv2.cornerHarris(gray_image_np, 2, 3, 0.04)
+
+#Արդյունքը լայնացվում է անկյունները նշելու համար
+dst = cv2.dilate(dst, None)
+
+# Կիրառենք threshold օպտիմալ արժեքի համար,այն  կարող է տարբերվել կախված նկարից
+image_np[dst > 0.01 * dst.max()] = [255, 0, 0]
+
+#Ցուցադրենք պատկերը անկյուններով
+plt.imshow(image_np)
+plt.title("Feature Extraction using Harris Corner Detection")
+plt.axis('off')
+plt.show()
