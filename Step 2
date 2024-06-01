@@ -1,0 +1,6 @@
+# Ստեղծել հիստոգրամ  grayscale նկարի համար 
+
+gray_values <- as.vector(gray_image)
+ggplot(data.frame(gray_values), aes(x = gray_values)) + 
+  geom_histogram(binwidth = 1, fill = "blue", color = "black") + 
+  labs(title = "Grayscale Histogram", x = "Intensity", y = "Frequency")
