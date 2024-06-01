@@ -1,0 +1,8 @@
+#Կիրառենք multi-level thresholding օգտագործելով EBImage
+multi_thresh <- otsu(as.Image(gray_image), levels = 3) 
+
+# Փոխակերպենք նկարը օգտագործելով threshold-ները
+multi_thresh_image <- cut(gray_image, breaks = c(-Inf, multi_thresh, Inf), labels = FALSE, include.lowest = TRUE)
+
+# Ցուցադրել  multi-level thresholded նկարը
+plot(as.cimg(multi_thresh_image), main = "Multi-level Thresholded Image")
