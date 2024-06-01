@@ -1,0 +1,6 @@
+# Կիրառենք  thresholding օգտագործելով  EBImage-ը
+threshold <- otsu(as.Image(gray_image)) 
+binary_image <- gray_image > threshold
+
+# Ցուցադրել binary պատկերը
+display(as.Image(binary_image), title = "Binary Image after Thresholding")
