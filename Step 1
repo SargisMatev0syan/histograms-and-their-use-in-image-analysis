@@ -8,3 +8,17 @@ BiocManager::install("EBImage")
 library(imager)
 library(ggplot2)
 library(EBImage)
+
+# Ներբեռնում ենք մեր նախընտրած նկարը ֆայլից
+image_path <- "/mnt/data/image.jpg" 
+image <- load.image(image_path)
+
+# Ցուցադրել սկզբնական նկարը
+plot(image, main = "Original Image")
+
+# Բերել նկարը Grayscale տարբերակի
+gray_image <- grayscale(image)
+
+# Ցուցադրել grayscale նկարը
+plot(gray_image, main = "Grayscale Image")
+
