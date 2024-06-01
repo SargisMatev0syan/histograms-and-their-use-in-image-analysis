@@ -1,0 +1,22 @@
+#Ձեռքով կատարենք հիստոգրամի հավասարեցումը
+hist_vals <- hist(gray_image, plot = FALSE)
+
+# Հաշվարկենք CDF-ը ( cumulative distribution function)
+cdf <- cumsum(hist_vals$counts) / sum(hist_vals$counts)
+
+# Համապատասխանեցնենք պիքսելների արժեքները հավասարեցված արժեքներին CDF-ի օգնությամբ
+equalized_image <- gray_image
+for (i in 1:length(cdf)) {
+  equalized_image[gray_image == hist_vals$breaks[i]] <- cdf[i]
+}
+
+# Նորմալիզացնենք պիքսելների արժեքները  [0 , 1] միջակայքում
+equalized_image <- as.cimg(equalized_image)
+
+# Ցուցադրենք հավասարեցված grayscale պատկերը
+plot(equalized_image, main = "Equalized Grayscale Image")
+
+# Ցուցադրենք սկզբնական և հավասարեցված հիստոգրամները
+par(mfrow = c(2, 1))
+hist(as.vector(gray_image), breaks = 256, col = "gray", main = "Original Grayscale Histogram", xlab = "Intensity", ylab = "Frequency")
+hist(as.vector(equalized_image), breaks = 256, col = "gray", main = "Equalized Grayscale Histogram", xlab = "Intensity", ylab = "Frequency")
