@@ -1,0 +1,7 @@
+#Ադապտացված հիստոգրամի հավասարեցում օգտագործելով EBImage
+ahe_image <- equalize(as.Image(gray_image), method = "adaptive")
+
+
+
+# Ցուցադրենք ադապտացված հիստոգրամի հավասարեցված նկարը
+plot(ahe_image, main = "Adaptive Histogram Equalized Image")
