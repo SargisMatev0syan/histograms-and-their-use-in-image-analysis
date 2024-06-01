@@ -1,0 +1,8 @@
+# Աղմուկի նվազեցում օգտագործելով Gaussian Blur
+blurred_image = cv2.GaussianBlur(np.array(gray_image), (5, 5), 0)
+
+# Ցուցադրենք լղոզված պատկերը
+plt.imshow(blurred_image, cmap='gray')
+plt.title("Noise Reduction using Gaussian Blur")
+plt.axis('off')
+plt.show()
