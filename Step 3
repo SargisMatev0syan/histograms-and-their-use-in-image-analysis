@@ -1,0 +1,12 @@
+# Դուրս բերել երանգները
+
+red_channel <- as.vector(image[,,1])
+green_channel <- as.vector(image[,,2])
+blue_channel <- as.vector(image[,,3])
+
+# Ստեղծել հիստոգրամ յուրաքանչյուր երանգի համար
+
+par(mfrow = c(3, 1))
+hist(red_channel, breaks = 256, col = "red", main = "Red Channel Histogram", xlab = "Intensity", ylab = "Frequency")
+hist(green_channel, breaks = 256, col = "green", main = "Green Channel Histogram", xlab = "Intensity", ylab = "Frequency")
+hist(blue_channel, breaks = 256, col = "blue", main = "Blue Channel Histogram", xlab = "Intensity", ylab = "Frequency")
