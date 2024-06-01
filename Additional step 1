@@ -1,0 +1,8 @@
+# Եզրերի Հայտնաբերում օգտագործելով Canny
+edges = cv2.Canny(np.array(gray_image), 100, 200)
+
+# Ցուցադրել եզրերը
+plt.imshow(edges, cmap='gray')
+plt.title("Edge Detection using Canny")
+plt.axis('off')
+plt.show()
